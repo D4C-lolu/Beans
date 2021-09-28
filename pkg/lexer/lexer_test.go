@@ -21,7 +21,6 @@ func TestNextToken(t *testing.T) {
 				return false;
 				}`
 
-
 	tests := []struct {
 		expectedType    token.TokenType
 		expectedLiteral string

@@ -20,6 +20,25 @@ type Program struct {
 	Statements []Statement
 }
 
+
+type ExpressionStatement struct {
+	Token token.Token
+	Expression Expression
+}
+
+func (es *ExpressionStatement) statementNode() {}
+func (es *ExpressionStatement) TokenLiteral() string { return es.Token.Literal }
+
+
+
+type ReturnStatement struct {
+	Token token.Token
+	ReturnValue Statement
+}
+
+func (rs *ReturnStatement) statementNode() {}
+func (rs *ReturnStatement) TokenLiteral() string { return rs.Token.Literal }
+
 func (p *Program) TokenLiteral() string {
 	if len(p.Statements) > 0 {
 		return p.Statements[0].TokenLiteral()
@@ -30,7 +49,7 @@ func (p *Program) TokenLiteral() string {
 
 type LetStatement struct {
 	Token token.Token //LET token
-	Name *Identifier
+	Name  *Identifier
 	Value Expression
 }
 
@@ -39,14 +58,10 @@ type Identifier struct {
 	Value string
 }
 
+func (ls *LetStatement) statementNode() {}
 
+func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal }
 
-func (ls *LetStatement) statementNode () {}
+func (i *Identifier) expressionNode() {}
 
-func (ls *LetStatement) TokenLiteral() string { return ls.Token.Literal}
-
-
-func (i *Identifier) expressionNode () {}
-
-func (i *Identifier) TokenLiteral() string { return i.Token.Literal}
-
+func (i *Identifier) TokenLiteral() string { return i.Token.Literal }
