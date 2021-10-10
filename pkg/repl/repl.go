@@ -1,7 +1,9 @@
 package repl
 
 import (
+	"Beans/beans/pkg/evaluator"
 	"Beans/beans/pkg/lexer"
+	"Beans/beans/pkg/object"
 	"Beans/beans/pkg/parser"
 	"bufio"
 	"fmt"
@@ -12,6 +14,8 @@ const PROMPT = ">> "
 
 func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
+	env := object.NewEnvironment()
+
 	for {
 		fmt.Print(PROMPT)
 		scanned := scanner.Scan()
@@ -26,8 +30,12 @@ func Start(in io.Reader, out io.Writer) {
 			printParserErrors(out, p.Errors())
 			continue
 		}
-		io.WriteString(out, program.String())
-		io.WriteString(out, "\n")
+		evaluated := evaluator.Eval(program, env)
+		if evaluated != nil {
+			io.WriteString(out, evaluated.Inspect())
+			io.WriteString(out, "\n")
+		}
+
 	}
 }
 
